@@ -10,8 +10,8 @@ import com.auctionall.itemservices.application.out.Items;
 import com.auctionall.itemservices.application.out.Users;
 import com.auctionall.itemservices.infrastructure.adapter.exception.BusinessException;
 import com.auctionall.itemservices.infrastructure.annotations.UseCase;
-import com.auctionall.itemservices.infrastructure.reactive.UnitReactive;
-import reactor.core.publisher.Mono;
+import com.auctionall.itemservices.infrastructure.reactive.Collectionx;
+import com.auctionall.itemservices.infrastructure.reactive.Unitx;
 
 @UseCase
 public class ItemService implements RegisteringItem, UpdatingItem, FetchingItem {
@@ -25,11 +25,11 @@ public class ItemService implements RegisteringItem, UpdatingItem, FetchingItem 
     }
 
     @Override
-    public UnitReactive<Item> saveItem(Item item) {
+    public Unitx<Item> saveItem(Item item) {
 
-        ItemUser itemUser = new ItemUser(new User(item.user().id(), null, null, null), item);
+        ItemUser itemUser = new ItemUser(new User(item.user().id()), item);
 
-        return UnitReactive.of(Mono.just(itemUser)
+        return Unitx.of(Unitx.just(itemUser).toMono()
                 .flatMap(n -> {
                     return this.users.findUserById(n.getUser().id()).toMono()
                             .doOnNext(itemUser::setUser)
@@ -38,30 +38,43 @@ public class ItemService implements RegisteringItem, UpdatingItem, FetchingItem 
                 .flatMap(k -> {
                     return items.existsItemByName(itemUser.getItem())
                             .flatMap(itemExists -> itemExists ?
-                                    UnitReactive.error(new BusinessException("Item already registered...")) :
+                                    Unitx.error(new BusinessException("Item already registered...")) :
                                     items.save(itemUser.getItem())).toMono();
                 }));
     }
 
     @Override
-    public UnitReactive<Item> updateItem(Integer itemId, Item item) {
-        return items.existsItemById(itemId)
-                .flatMap(itemExists -> itemExists ?
-                        items.save(buildItem(itemId, item)) :
-                        UnitReactive.error(new BusinessException("Item missed on the repository.")));
+    public Unitx<Item> updateItem(Integer itemId, Item item) {
+
+        ItemUser itemUser = new ItemUser(new User(item.user().id()), item);
+
+        return Unitx.of(Unitx.just(itemUser).toMono()
+                .flatMap(n -> {
+                    return this.users.findUserById(n.getUser().id()).toMono()
+                            .doOnNext(itemUser::setUser)
+                            .thenReturn(itemUser);
+                })
+                .flatMap(k -> {
+                    return items.existsItemById(itemId)
+                            .flatMap(itemExists -> itemExists ?
+                                    items.save(itemUser.getItem()) :
+                                    Unitx.error(new BusinessException("Item already registered..."))).toMono();
+                }));
     }
 
     @Override
-    public UnitReactive<Item> findItemById(Integer itemId) {
+    public Unitx<Item> findItemById(Integer itemId) {
         return items.findItemById(itemId);
     }
 
     @Override
-    public UnitReactive<Boolean> existsItemById(Integer id) {
+    public Unitx<Boolean> existsItemById(Integer id) {
         return items.existsItemById(id);
     }
 
-    private Item buildItem(Integer itemId, Item item) {
-        return new Item(itemId, new User(item.user().id(), null, null, null), item.name(), item.estimatedValue(), item.status());
+    @Override
+    public Collectionx<Item> findAll() {
+        return items.findAll();
     }
+
 }

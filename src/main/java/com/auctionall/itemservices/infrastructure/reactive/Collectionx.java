@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 @Getter(AccessLevel.PRIVATE)
 @Value(staticConstructor = "of")
-public class CollectionReactive<T> {
+public class Collectionx<T> {
 
     Flux<T> flux;
 
@@ -17,8 +17,8 @@ public class CollectionReactive<T> {
         return flux;
     }
 
-    public <U> CollectionReactive<U> map(Function<? super T, ? extends U> mapper) {
-        return CollectionReactive.of(flux.map(mapper));
+    public <U> Collectionx<U> map(Function<? super T, ? extends U> mapper) {
+        return Collectionx.of(flux.map(mapper));
     }
 }
 

@@ -53,7 +53,7 @@ class ItemControllerIntegrationTest {
 
     @Test
     public void given_NewItem_When_CreateItem_Then_Create_Item_Success() {
-        ItemRequest itemRequest = new ItemRequest(null, 1000,"Ferrari 1941", new BigDecimal("11000000.00"), Status.ENABLED);
+        ItemRequest itemRequest = new ItemRequest(null, 1,"Ferrari 1941", new BigDecimal("11000000.00"), Status.ENABLED);
 
         webClient.post()
                 .uri("/items")
