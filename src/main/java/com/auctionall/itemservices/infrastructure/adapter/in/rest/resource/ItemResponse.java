@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public record ItemResponse(Integer id, Integer userId, @NotEmpty(message = "Item's name mandatory.") String name, @NotNull BigDecimal estimatedValue, Status status) {
 
     public static ItemResponse fromDomain(Item item) {
-        return new ItemResponse(item.id(),item.userId(), item.name(), item.estimatedValue(), item.status());
+        return new ItemResponse(item.id(),item.user().id(), item.name(), item.estimatedValue(), item.status());
     }
 
 }

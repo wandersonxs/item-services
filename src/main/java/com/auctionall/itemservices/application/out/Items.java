@@ -8,7 +8,7 @@ public interface Items {
 
     UnitReactive<Boolean> existsItemById(Integer itemId);
 
-    public UnitReactive<Boolean> existsItemByName(Item item);
+    UnitReactive<Boolean> existsItemByName(Item item);
 
     UnitReactive<Item> save(Item item);
 

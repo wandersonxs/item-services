@@ -1,6 +1,7 @@
 package com.auctionall.itemservices.infrastructure.adapter.out.persistence.entity;
 
 import com.auctionall.itemservices.application.domain.Item;
+import com.auctionall.itemservices.application.domain.User;
 import com.auctionall.itemservices.application.domain.shared.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
@@ -34,7 +34,7 @@ public class ItemEntity {
     public Item toDomain() {
         return new Item(
                 id,
-                userId,
+                new User(userId, null, null, null),
                 name,
                 estimatedValue,
                 Status.valueOf(status)
@@ -44,7 +44,7 @@ public class ItemEntity {
     public static ItemEntity fromDomain(Item item) {
         var entity = new ItemEntity();
         entity.setId(item.id());
-        entity.setUserId(item.userId());
+        entity.setUserId(item.user().id());
         entity.setName(item.name());
         entity.setEstimatedValue(item.estimatedValue());
         entity.setStatus(item.status().name());
