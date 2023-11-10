@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 public interface RegisteringItem {
 
-    Mono<Item> saveItem(Item item);
+    UnitReactive<Item> saveItem(Item item);
 
 }
 

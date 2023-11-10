@@ -1,12 +1,10 @@
 package com.auctionall.itemservices.infrastructure.adapter.in.rest;
 
-import com.auctionall.itemservices.application.domain.Item;
 import com.auctionall.itemservices.application.in.FetchingItem;
 import com.auctionall.itemservices.application.in.RegisteringItem;
 import com.auctionall.itemservices.application.in.UpdatingItem;
 import com.auctionall.itemservices.infrastructure.adapter.in.rest.resource.ItemRequest;
 import com.auctionall.itemservices.infrastructure.adapter.in.rest.resource.ItemResponse;
-import com.auctionall.itemservices.infrastructure.reactive.UnitReactive;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,15 +30,11 @@ public class ItemController {
 
     @PostMapping("/items")
     Mono<ResponseEntity<ItemResponse>> createItem(@RequestBody @Valid ItemRequest request, UriComponentsBuilder uriComponentsBuilder) {
-//        return this.registeringItem.saveItem(request.toDomain()).toMono()
-//                .map(n -> ResponseEntity.created(null).body(ItemResponse.fromDomain(n)));
 
         return this.registeringItem.saveItem(request.toDomain())
-                                .map(n -> ResponseEntity.created(null).body(ItemResponse.fromDomain(n)))
+                                .map(n -> ResponseEntity.created(null).body(ItemResponse.fromDomain(n))).toMono()
                                 .onErrorReturn(WebClientResponseException.class, ResponseEntity.badRequest().build())
                                 .onErrorReturn(WebClientRequestException.class, ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build());
-
-
     }
 
     @PutMapping("/items/{id}")
