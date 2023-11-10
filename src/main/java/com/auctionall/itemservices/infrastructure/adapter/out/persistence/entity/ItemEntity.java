@@ -34,7 +34,7 @@ public class ItemEntity {
     public Item toDomain() {
         return new Item(
                 id,
-                new User(userId, null, null, null),
+                new User(userId),
                 name,
                 estimatedValue,
                 Status.valueOf(status)

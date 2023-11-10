@@ -1,15 +1,17 @@
 package com.auctionall.itemservices.application.out;
 
 import com.auctionall.itemservices.application.domain.Item;
-import com.auctionall.itemservices.infrastructure.reactive.UnitReactive;
+import com.auctionall.itemservices.infrastructure.reactive.Collectionx;
+import com.auctionall.itemservices.infrastructure.reactive.Unitx;
 
 public interface Items {
-    UnitReactive<Item> findItemById(Integer itemId) throws ItemNotFound;
+    Unitx<Item> findItemById(Integer itemId) throws ItemNotFound;
 
-    UnitReactive<Boolean> existsItemById(Integer itemId);
+    Unitx<Boolean> existsItemById(Integer itemId);
 
-    UnitReactive<Boolean> existsItemByName(Item item);
+    Unitx<Boolean> existsItemByName(Item item);
 
-    UnitReactive<Item> save(Item item);
+    Unitx<Item> save(Item item);
 
+    Collectionx<Item> findAll();
 }

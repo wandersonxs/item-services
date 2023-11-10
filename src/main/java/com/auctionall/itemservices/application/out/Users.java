@@ -1,9 +1,9 @@
 package com.auctionall.itemservices.application.out;
 
 import com.auctionall.itemservices.application.domain.User;
-import com.auctionall.itemservices.infrastructure.reactive.UnitReactive;
+import com.auctionall.itemservices.infrastructure.reactive.Unitx;
 
 public interface Users {
-    UnitReactive<User> findUserById(Integer userId);
+    Unitx<User> findUserById(Integer userId);
 
 }

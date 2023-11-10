@@ -1,4 +1,4 @@
-package com.auctionall.itemservices.infrastructure.client.resource;
+package com.auctionall.itemservices.infrastructure.client.user.resource;
 
 
 import com.auctionall.itemservices.application.domain.User;
